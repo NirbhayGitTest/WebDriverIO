@@ -24,13 +24,13 @@ exports.config = {
         // './test/specs/**/*.js',
         
         'test/specs/vtiger/createDocument.js',
-        'test/specs/vtiger/createCampaign.js',
-        'test/specs/vtiger/createProduct.js',
-        'test/specs/vtiger/createOrganizationWithContact.js',
-        'test/specs/vtiger/createCampaignWithProduct.js',
-        'test/specs/vtiger/createContact.js',
-        'test/specs/vtiger/createOrganization.js',
-        'test/specs/vtiger/orgWithIndustryDropdown.js'
+        // 'test/specs/vtiger/createCampaign.js',
+        // 'test/specs/vtiger/createProduct.js',
+        // 'test/specs/vtiger/createOrganizationWithContact.js',
+        // 'test/specs/vtiger/createCampaignWithProduct.js',
+        // 'test/specs/vtiger/createContact.js',
+        // 'test/specs/vtiger/createOrganization.js',
+        // 'test/specs/vtiger/orgWithIndustryDropdown.js'
     ],
     // Patterns to exclude.
     exclude: [
