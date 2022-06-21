@@ -3,59 +3,105 @@ const { assert } = require("chai")
 describe ("vtiger_Contact", async () => {
     it('createContact' , async () => {
         await browser.url("http://localhost:8888/")
-        await browser.maximizeWindow()
         await console.log(browser.getTitle())
+        await browser.maximizeWindow()
 
-         var randomNum = Math.round(Math.random()*1000)
+        var randomNum = Math.round(Math.random()*1000)
 
-         var userName = "admin"
-         var password = "root"
-         await browser.$("//input[@name='user_name']").setValue(userName)
-         await browser.$("//input[@name='user_password']").setValue(password)
-        await browser.$("//input[@id='submitButton']").click()
+        var userName = "admin"
+        var password = "root"
+        const userText = await browser.$("//input[@name='user_name']")
+        await userText.setValue(userName)
+        const passwordText = await browser.$("//input[@name='user_password']")
+        await passwordText.setValue(password)
+        const loginBtn = await browser.$("//input[@id='submitButton']")
+        await loginBtn.click()
 
-        await browser.pause(2000)
-        //
-        await browser.$("//td[@class='tabUnSelected']/a[text()='Organizations']").click()
-        await browser.pause(2000)
+        // Assertion
+        await expect(browser).toHaveUrlContaining('index&module=Home')
 
-        await browser.$("//img[@alt='Create Organization...']").click()
-        await browser.pause(2000)
+        var organization = await browser.$("//td[@class='tabUnSelected']/a[text()='Organizations']")
+        await organization.click()
 
+        // Assertion 
+        await expect(browser).toHaveUrlContaining('Accounts&action')
         
-        await browser.$("//input[@name='accountname']").setValue("organizationWebDriverIO"+ randomNum)
 
-        await browser.$("//td[@class='dvtCellInfo']//input[@name='accountname']/../../preceding-sibling::tr/td/div/input[@title='Save [Alt+S]']").click()
-        await browser.pause(2000)
+        var createOrganization = await browser.$("//img[@alt='Create Organization...']")
+        await createOrganization.click()
 
-        var organizationNameSaved = await browser.$("//span[@id='dtlview_Organization Name']").getText()
+         // Assertion 
+         await expect(browser).toHaveUrlContaining('EditView&return')
+        
+
+         var orgNameTxt = await browser.$("//input[@name='accountname']")
+         await orgNameTxt.setValue("organizationWebDriverIO"+randomNum)
+
+         var saveBtn = await browser.$("//td[@class='dvtCellInfo']//input[@name='accountname']/../../preceding-sibling::tr/td/div/input[@title='Save [Alt+S]']")
+         await saveBtn.click()
+        
+         var savedOrg = await browser.$("//span[@id='dtlview_Organization Name']").getText()
+
+        // wait
+        async () => {
+            const savedOrganizationText = await $("//span[@class='dvHeaderText']")
+            await savedOrganizationText.waitForDisplayed({ timeout: 3000 });
+        };
+
+        // Assertion
+        var organizationInformationPage = await browser.$("//span[@class='dvHeaderText']").getText()
+        await console.log(organizationInformationPage);
+        await assert.include(organizationInformationPage,"Organization","organization page not found")
+
+         // Assertion 
+         await expect(browser).toHaveUrlContaining('Accounts&parenttab')
         //
-        await browser.$("//a[text()='Contacts']").click()
-        await browser.pause(2000)
+        var contacts = await browser.$("//a[text()='Contacts']")
+        await contacts.click()
 
-        await browser.$("//img[@alt='Create Contact...']").click()
-        await browser.pause(2000)
+        // Assertion 
+        await expect(browser).toHaveUrlContaining('Contacts&action')
 
-        await browser.$("//input[@name='lastname']").setValue("contactWebDriverIO")
+        var createContact = await browser.$("//img[@alt='Create Contact...']")
+        await createContact.click()
+
+        // Assertion 
+        await expect(browser).toHaveUrlContaining('EditView&return')
+
+        var contactNameTxt = await browser.$("//input[@name='lastname']")
+        await contactNameTxt.setValue("contactWebDriverIO")
 
         //click on createOrg inside Contacts
-        await browser.$("//img[@src='themes/softed/images/select.gif']").click()
-        await browser.pause(2000)
+        var createOrgLinkInContact = await browser.$("//img[@src='themes/softed/images/select.gif']")
+        await createOrgLinkInContact.click()
+        
         await browser.switchWindow('Accounts&action')
-        await browser.pause(2000)
-        await browser.$("//input[@id='search_txt']").setValue(organizationNameSaved)
-        await browser.pause(2000)
-        await browser.$("//input[@name='search']").click()
+        // Assertion 
+        await expect(browser).toHaveUrlContaining('Accounts&action')
+        
+        var searchText = await browser.$("//input[@id='search_txt']")
+        await searchText.setValue(savedOrg)
+        
+        var searchBtn = await browser.$("//input[@name='search']")
+        await searchBtn.click()
 
-        await browser.pause(2000)
+        // wait
+        async () => {
+            const savedOrganization = await $("//a[text()='"+savedOrg+"']")
+            await savedOrganization.waitForDisplayed({ timeout: 3000 });
+        };
 
         // await browser.$("//a[@id='1']").click()
-        await browser.$("//a[text()='"+organizationNameSaved+"']").click()
+        var savedOrgSearch = await browser.$("//a[text()='"+savedOrg+"']")
+        await savedOrgSearch.click()
 
         await browser.switchWindow('Contacts&action')
+        // Assertion 
+        await expect(browser).toHaveUrlContaining('Contacts&action')
 
-        await browser.$("//input[@class='crmButton small save']").click()
-        await browser.pause(2000)
+        var saveBtn = await browser.$("//input[@class='crmButton small save']")
+        await saveBtn.click()
+       
 
         // Assertion 
         var contactInformationPage = await browser.$("//span[@class='dvHeaderText']").getText()
@@ -63,9 +109,10 @@ describe ("vtiger_Contact", async () => {
         await assert.include(contactInformationPage,"Contact","contact page not found")
 
         const adminImg = await browser.$("//img[@src='themes/softed/images/user.PNG']")
-        adminImg.moveTo()
+        await adminImg.moveTo()
 
-        await browser.$("//a[text()='Sign Out']").click()
+        var signOut = await browser.$("//a[text()='Sign Out']")
+        await signOut.click()
 
     })
 })

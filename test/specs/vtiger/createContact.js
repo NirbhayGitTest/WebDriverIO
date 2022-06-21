@@ -4,35 +4,60 @@ describe ("vtiger_Contact", async () => {
     it('createContact' , async () => {
         await browser.url("http://localhost:8888/")
         await console.log(browser.getTitle())
+        await browser.maximizeWindow()
 
         var userName = "admin"
         var password = "root"
-        await browser.$("//input[@name='user_name']").setValue(userName)
-        await browser.$("//input[@name='user_password']").setValue(password)
-        await browser.$("//input[@id='submitButton']").click()
+        var userText = await browser.$("//input[@name='user_name']")
+        await userText.setValue(userName)
+        var passwordText = await browser.$("//input[@name='user_password']")
+        await passwordText.setValue(password)
+        const loginBtn = await browser.$("//input[@id='submitButton']")
+        await loginBtn.click()
 
-        await browser.pause(2000)
+        // Assertion
+        await expect(browser).toHaveUrlContaining('index&module=Home')
 
-        await browser.$("//a[text()='Contacts']").click()
-        await browser.pause(2000)
+        var contacts = await browser.$("//a[text()='Contacts']")
+        await contacts.click()
 
-        await browser.$("//img[@alt='Create Contact...']").click()
-        await browser.pause(2000)
+        // Assertion 
+        await expect(browser).toHaveUrlContaining('Contacts&action')
 
-        await browser.$("//input[@name='lastname']").setValue("contactWebDriverIO")
+        var createContact = await browser.$("//img[@alt='Create Contact...']")
+        await createContact.click()
 
-        await browser.$("//input[@class='crmButton small save']").click()
-        await browser.pause(2000)
+        // Assertion 
+        await expect(browser).toHaveUrlContaining('EditView&return')
+
+        var contactNameTxt = await browser.$("//input[@name='lastname']")
+        await contactNameTxt.setValue("contactWebDriverIO")
+
+        var saveBtn = await browser.$("//input[@class='crmButton small save']")
+        await saveBtn.click()
+
+        // wait
+        async () => {
+            const savedContactText = await $("//span[@class='dvHeaderText']")
+            await savedContactText.waitForDisplayed({ timeout: 3000 });
+        };
 
         // Assertion 
         var contactInformationPage = await browser.$("//span[@class='dvHeaderText']").getText()
         await console.log(contactInformationPage);
         await assert.include(contactInformationPage,"Contact","contact page not found")
 
-        const adminImg = await browser.$("//img[@src='themes/softed/images/user.PNG']")
-        adminImg.moveTo()
+        // Assertion 
+        await expect(browser).toHaveUrlContaining('Contacts&parenttab')
 
-        await browser.$("//a[text()='Sign Out']").click()
+        const adminImg = await browser.$("//img[@src='themes/softed/images/user.PNG']")
+        await adminImg.moveTo()
+
+        var signOut = await browser.$("//a[text()='Sign Out']")
+        await signOut.click()
+
+        // Assertion 
+        await expect(browser).toHaveUrlContaining('Login&module')
 
     })
 })

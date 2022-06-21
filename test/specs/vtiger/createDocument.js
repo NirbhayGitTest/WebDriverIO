@@ -9,68 +9,97 @@ describe ("vtiger_Document", async () => {
         await browser.maximizeWindow()
         await console.log(browser.getTitle())
 
-        
-
         var userName = "admin"
         var password = "root"
-        await browser.$("//input[@name='user_name']").setValue(userName)
-        await browser.$("//input[@name='user_password']").setValue(password)
-        await browser.$("//input[@id='submitButton']").click()
+        const userText = await browser.$("//input[@name='user_name']")
+        await userText.setValue(userName)
+        const passwordText = await browser.$("//input[@name='user_password']")
+        await passwordText.setValue(password)
+        const loginBtn = await browser.$("//input[@id='submitButton']")
+        await loginBtn.click()
     })
     it('fill Document details' , async () => {
-        await browser.pause(2000)
+        
+        // Assertion
+        await expect(browser).toHaveUrlContaining('index&module=Home')
 
-        await browser.$("//td[@class='tabUnSelected']/a[text()='Documents']").click()
-        await browser.pause(2000)
+        var document = await browser.$("//td[@class='tabUnSelected']/a[text()='Documents']")
+        await document.click()
+       
 
-        await browser.$("//img[@alt='Create Document...']").click()
-        await browser.pause(2000)
+        // Assertion 
+        await expect(browser).toHaveUrlContaining('Documents&action')
 
-        await browser.$("//input[@name='notes_title']").setValue("documentWebDriverIO")
+        var createDocument = await browser.$("//img[@alt='Create Document...']")
+        await createDocument.click()
+
+        // Assertion 
+        await expect(browser).toHaveUrlContaining('EditView&return')
+       
+
+        var documentNameTxt = await browser.$("//input[@name='notes_title']")
+        await documentNameTxt.setValue("documentWebDriverIO")
 
     })
 
     it('UploadFile' , async () => {
 
         const filePath = 'E:/TestYantra Soft/Selenium Notes Sir/agile_2022.docx'
-         const remoteFilePath = await browser.uploadFile(filePath)
-        var file = await browser.$("#filename_I__").setValue(remoteFilePath)
-
-        await browser.pause(2000)
+        const remoteFilePath = await browser.uploadFile(filePath)
+        await browser.$("#filename_I__").setValue(remoteFilePath)
         
     })
 
     it('Write Paragraph' , async () => {
-        browser.switchToFrame(0)
-        await browser.$("//body[@class='cke_show_borders']").setValue("Welcome to the WebdriverIO documentation. It will help you to get started fast. If you run into problems, you can find help and answers on our Gitter Channel or you can hit me on Twitter.")
-        await browser.pause(2000)
+        
+        await browser.switchToFrame(0)
+
+        var msgAreaText = await browser.$("//body[@class='cke_show_borders']")
+        await msgAreaText.setValue("Welcome to the WebdriverIO documentation. It will help you to get started fast. If you run into problems, you can find help and answers on our Gitter Channel or you can hit me on Twitter.")
+        
         await browser.keys(['Control', 'a'])
         await browser.keys(['Control', 'c'])
-        await browser.pause(2000)
+       
 
-        browser.switchToFrame(null)
+        await browser.switchToFrame(null)
 
-        await browser.$("//a[@class='cke_off cke_button_bold']").click()
-        await browser.pause(2000)
-        await browser.$("//a[@class='cke_off cke_button_italic']").click()
-        await browser.pause(2000)
-        await browser.$("//a[@class='cke_off cke_button_strike']").click()
-        await browser.pause(2000)
+        var boldbtn = await browser.$("//a[@class='cke_off cke_button_bold']")
+        await boldbtn.click()
+       
+        var italicbtn = await browser.$("//a[@class='cke_off cke_button_italic']")
+        await italicbtn.click()
+       
+        var strikebtn = await browser.$("//a[@class='cke_off cke_button_strike']")
+        await strikebtn.click()
+        
 
     })
 
     it('save and Logout' , async () => {
-        await browser.$("//div[@id='basicTab']/table[@class='dvtContentSpace']//table[@class='small']//input[@title='Save [Alt+S]']").click()
-        await browser.pause(2000)
+        var saveBtn = await browser.$("//div[@id='basicTab']/table[@class='dvtContentSpace']//table[@class='small']//input[@title='Save [Alt+S]']")
+        await saveBtn.click()
+
+        // wait
+        async () => {
+            const savedDocumentText = await $("//span[@class='dvHeaderText']")
+            await savedDocumentText.waitForDisplayed({ timeout: 3000 });
+        };
+        
+
+        // Assertion 
+        await expect(browser).toHaveUrlContaining('Documents&parenttab')
 
         // Assertion
         var documentInformationPage = await browser.$("//span[@class='dvHeaderText']").getText()
         await console.log(documentInformationPage);
         await assert.include(documentInformationPage,"Document","document page not found")
 
-        const adminImg = await browser.$("//img[@src='themes/softed/images/user.PNG']")
-        adminImg.moveTo()
+        
 
-        await browser.$("//a[text()='Sign Out']").click()
+        const adminImg = await browser.$("//img[@src='themes/softed/images/user.PNG']")
+        await adminImg.moveTo()
+
+        var signOut = await browser.$("//a[text()='Sign Out']")
+        await signOut.click()
     })
 })
