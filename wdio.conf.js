@@ -22,15 +22,25 @@ exports.config = {
     //
     specs: [
         // './test/specs/**/*.js',
+        // 'test/specs/assignment/jqueryRadio.js',
+        // 'test/specs/assignment/vtiger_contactRadio.js',
+        // 'test/specs/assignment/amazon.js',
+        // 'test/specs/assignment/frameHandlePractice.js',
+        // 'test/specs/assignment/framesHandlePractice2.js'
+
+
+        // 'test/specs/popup/alert.js'
+        'test/specs/disabledElement/disabledElement.js'
+
         
-        'test/specs/vtiger/createDocument.js',
-        'test/specs/vtiger/createCampaign.js',
-        'test/specs/vtiger/createProduct.js',
-        'test/specs/vtiger/createOrganizationWithContact.js',
-        'test/specs/vtiger/createCampaignWithProduct.js',
-        'test/specs/vtiger/createContact.js',
-        'test/specs/vtiger/createOrganization.js',
-        'test/specs/vtiger/orgWithIndustryDropdown.js'
+        // 'test/specs/vtiger/createDocument.js',
+        // 'test/specs/vtiger/createCampaign.js',
+        // 'test/specs/vtiger/createProduct.js',
+        // 'test/specs/vtiger/createOrganizationWithContact.js',
+        // 'test/specs/vtiger/createCampaignWithProduct.js',
+        // 'test/specs/vtiger/createContact.js',
+        // 'test/specs/vtiger/createOrganization.js',
+        // 'test/specs/vtiger/orgWithIndustryDropdown.js'
     ],
 
     suites: {

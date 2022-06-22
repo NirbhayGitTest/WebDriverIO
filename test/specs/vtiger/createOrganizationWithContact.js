@@ -45,7 +45,7 @@ describe ("vtiger_Contact", async () => {
         // wait
         async () => {
             const savedOrganizationText = await $("//span[@class='dvHeaderText']")
-            await savedOrganizationText.waitForDisplayed({ timeout: 3000 });
+            await savedOrganizationText.waitForDisplayed({ timeout: 5000 });
         };
 
         // Assertion
@@ -88,7 +88,7 @@ describe ("vtiger_Contact", async () => {
         // wait
         async () => {
             const savedOrganization = await $("//a[text()='"+savedOrg+"']")
-            await savedOrganization.waitForDisplayed({ timeout: 3000 });
+            await savedOrganization.waitForDisplayed({ timeout: 5000 });
         };
 
         // await browser.$("//a[@id='1']").click()

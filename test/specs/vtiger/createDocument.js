@@ -82,7 +82,7 @@ describe ("vtiger_Document", async () => {
         // wait
         async () => {
             const savedDocumentText = await $("//span[@class='dvHeaderText']")
-            await savedDocumentText.waitForDisplayed({ timeout: 3000 });
+            await savedDocumentText.waitForDisplayed({ timeout: 5000 });
         };
         
 

@@ -44,7 +44,7 @@ describe ("vtiger_Organization", async () => {
         // wait
         async () => {
             const savedOrganizationText = await $("//span[@class='dvHeaderText']")
-            await savedOrganizationText.waitForDisplayed({ timeout: 3000 });
+            await savedOrganizationText.waitForDisplayed({ timeout: 5000 });
         };
 
         // Assertion

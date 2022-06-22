@@ -42,7 +42,7 @@ describe ("vtiger_CampaignWithProduct", async () => {
        // wait
        async () => {
         const savedProductText = await $("//span[@class='lvtHeaderText']")
-        await savedProductText.waitForDisplayed({ timeout: 3000 });
+        await savedProductText.waitForDisplayed({ timeout: 5000 });
         };
 
 
@@ -94,7 +94,7 @@ describe ("vtiger_CampaignWithProduct", async () => {
          // wait
          async () => {
             const savedOrganization = await $("//a[text()='"+savedProduct+"']")
-            await savedOrganization.waitForDisplayed({ timeout: 3000 });
+            await savedOrganization.waitForDisplayed({ timeout: 5000 });
         };
 
         var savedProductSearch = await browser.$("//a[text()='"+savedProduct+"']")
@@ -111,7 +111,7 @@ describe ("vtiger_CampaignWithProduct", async () => {
        // wait
        async () => {
            const savedCampaignText = await $("//span[@class='dvHeaderText']")
-           await savedCampaignText.waitForDisplayed({ timeout: 3000 });
+           await savedCampaignText.waitForDisplayed({ timeout: 5000 });
        };
 
        // Assertion 

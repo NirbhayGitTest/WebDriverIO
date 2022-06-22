@@ -39,7 +39,7 @@ describe ("vtiger_Contact", async () => {
         // wait
         async () => {
             const savedContactText = await $("//span[@class='dvHeaderText']")
-            await savedContactText.waitForDisplayed({ timeout: 3000 });
+            await savedContactText.waitForDisplayed({ timeout: 5000 });
         };
 
         // Assertion 

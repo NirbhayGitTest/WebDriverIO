@@ -52,7 +52,7 @@ describe ("vtiger_Product", async () => {
         // wait
         async () => {
             const savedProductText = await $("//span[@class='lvtHeaderText']")
-            await savedProductText.waitForDisplayed({ timeout: 3000 });
+            await savedProductText.waitForDisplayed({ timeout: 5000 });
         };
 
         // Assertion

@@ -60,7 +60,7 @@ describe ("vtiger_Campaign", async () => {
         // wait
         async () => {
             const savedCampaignText = await $("//span[@class='dvHeaderText']")
-            await savedCampaignText.waitForDisplayed({ timeout: 3000 });
+            await savedCampaignText.waitForDisplayed({ timeout: 5000 });
         };
 
         // Assertion 
