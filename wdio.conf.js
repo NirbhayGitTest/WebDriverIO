@@ -1,3 +1,5 @@
+const video = require('wdio-video-reporter');
+
 exports.config = {
     //
     // ====================
@@ -26,21 +28,25 @@ exports.config = {
         // 'test/specs/assignment/vtiger_contactRadio.js',
         // 'test/specs/assignment/amazon.js',
         // 'test/specs/assignment/frameHandlePractice.js',
-        // 'test/specs/assignment/framesHandlePractice2.js'
+        // 'test/specs/assignment/framesHandlePractice2.js',
 
 
-        // 'test/specs/popup/alert.js'
-        'test/specs/disabledElement/disabledElement.js'
+        // 'test/specs/popup/alert.js',
+        // 'test/specs/disabledElement/disabledElement.js',
 
         
         // 'test/specs/vtiger/createDocument.js',
-        // 'test/specs/vtiger/createCampaign.js',
+        'test/specs/vtiger/createCampaign.js',
         // 'test/specs/vtiger/createProduct.js',
         // 'test/specs/vtiger/createOrganizationWithContact.js',
         // 'test/specs/vtiger/createCampaignWithProduct.js',
         // 'test/specs/vtiger/createContact.js',
         // 'test/specs/vtiger/createOrganization.js',
-        // 'test/specs/vtiger/orgWithIndustryDropdown.js'
+        // 'test/specs/vtiger/orgWithIndustryDropdown.js',
+
+        // 'test/specs/assignment/demoContact.js',
+
+        // 'test/specs/assignment/demoContactjson.js',
     ],
 
     suites: {
@@ -76,13 +82,21 @@ exports.config = {
     // Sauce Labs platform configurator - a great tool to configure your capabilities:
     // https://saucelabs.com/platform/platform-configurator
     //
-    capabilities: [{
+    capabilities: [
+        {
     
         // maxInstances can get overwritten per capability. So if you have an in-house Selenium
         // grid with only 5 firefox instances available you can make sure that not more than
         // 5 instances get started at a time.
-        maxInstances: 2,
+        maxInstances: 5,
         browserName: 'chrome',
+
+        // 'goog:chromeOptions': {
+        //     // to run chrome headless the following flags are required
+        //     // (see https://developers.google.com/web/updates/2017/04/headless-chrome)
+        //     args: ['--headless', '--disable-gpu'],
+        //     },
+
         acceptInsecureCerts: true
         // If outputDir is provided WebdriverIO can capture driver session logs
         // it is possible to configure which logTypes to include/exclude.
@@ -92,9 +106,16 @@ exports.config = {
     // {
     //     maxInstances: 2,
     //     browserName: 'firefox',
+
+    //     'moz:firefoxOptions': {
+    //         // flag to activate Firefox headless mode (see https://github.com/mozilla/geckodriver/blob/master/README.md#firefox-capabilities for more details about moz:firefoxOptions)
+    //         args: ['-headless']
+    //       },
+
     //     acceptInsecureCerts: true
     
     //  }
+
     ],
     //
     // ===================
@@ -134,7 +155,7 @@ exports.config = {
     //
     // Default timeout in milliseconds for request
     // if browser driver or grid doesn't send response
-    connectionRetryTimeout: 120000,
+    connectionRetryTimeout: 12000,
     //
     // Default request retries count
     connectionRetryCount: 3,
@@ -165,7 +186,33 @@ exports.config = {
     // Test reporter for stdout.
     // The only one supported by default is 'dot'
     // see also: https://webdriver.io/docs/dot-reporter
+    
     reporters: ['spec'],
+    // reporters: [['allure', {
+    //     outputDir: 'allure-results',
+    //     disableWebdriverStepsReporting: true,
+    //     disableWebdriverScreenshotsReporting: false,
+    // }]],
+
+    // reporters: [
+    //     [video, {
+    //       saveAllVideos: false,       // If true, also saves videos for successful test cases
+    //       videoSlowdownMultiplier: 5, // Higher to get slower videos, lower for faster videos [Value 1-100]
+    //     }],
+    //   ],
+
+
+    //   reporters: [
+    //     [video, {
+    //       saveAllVideos: false,       // If true, also saves videos for successful test cases
+    //       videoSlowdownMultiplier: 5, // Higher to get slower videos, lower for faster videos [Value 1-100]
+    //     }],
+    //     ['allure', {
+    //       outputDir: './_results_/allure-raw',
+    //       disableWebdriverStepsReporting: true,
+    //       disableWebdriverScreenshotsReporting: false,
+    //     }],
+    //   ],
 
 
     
@@ -270,8 +317,11 @@ exports.config = {
      * @param {Boolean} result.passed    true if test has passed, otherwise false
      * @param {Object}  result.retries   informations to spec related retries, e.g. `{ attempts: 0, limit: 0 }`
      */
-    // afterTest: function(test, context, { error, result, duration, passed, retries }) {
-    // },
+    afterTest: async function(test, context, { error, result, duration, passed, retries }) {
+        if (error) {
+            await browser.takeScreenshot();
+          }
+    },
 
 
     /**

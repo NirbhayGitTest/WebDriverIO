@@ -8,6 +8,9 @@ describe("amazon application" , async () => {
 
         await help.scrollIntoView()
 
+        //to fail intentionally
+        await expect(browser).toHaveUrlContaining('abc.com')
+
         await help.click()
 
     })

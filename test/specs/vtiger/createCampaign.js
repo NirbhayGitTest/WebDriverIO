@@ -1,61 +1,41 @@
 const { assert } = require("chai")
+const campaignPage = require("../../pomRepository/VTiger_POM/campaignPage")
+const createCampaignPage = require("../../pomRepository/VTiger_POM/createCampaignPage")
+
+const HomePage = require("../../pomRepository/VTiger_POM/HomePage")
+const LoginPage = require("../../pomRepository/VTiger_POM/LoginPage")
 
 describe ("vtiger_Campaign", async () => {
-    it('createCampaign' , async () => {
-        await browser.url("http://localhost:8888/")
+    it('createCampaign -Smoke' , async () => {
+        
+        await LoginPage.open()
+
         await console.log(browser.getTitle())
         await browser.maximizeWindow()
 
-        var userName = "admin"
-        var password = "root"
-        var userText = await browser.$("//input[@name='user_name']")
-        await userText.setValue(userName)
-        var passwordText = await browser.$("//input[@name='user_password']")
-        await passwordText.setValue(password)
-        const loginBtn = await browser.$("//input[@id='submitButton']")
-        await loginBtn.click()
+        await LoginPage.login('admin', 'root');
     
 
-        // Assertion 
-        // var homepage = await browser.$("//a[@class='hdrLink']").getText()
-        // await console.log(homepage);
-        // await assert.include(homepage,"Home","failed login")
+        // Assertion
         await expect(browser).toHaveUrlContaining('index&module=Home')
        
-        var more = await browser.$("//a[text()='More']")
-        await more.moveTo()
-
-        var campaigns = await browser.$("//a[text()='Campaigns']")
-        await campaigns.click()
+        await HomePage.campaign()
 
         // Assertion 
         await expect(browser).toHaveUrlContaining('Campaigns&action')
 
-        // Assertion 
-        // var campaignPage = await browser.$("//a[@class='hdrLink']").getText()
-        // await console.log(campaignPage);
-        // await assert.include(campaignPage,"Campaigns","campaign page not found")
+        await campaignPage.createCampaign()
 
-        var createCampaign = await browser.$("//img[@alt='Create Campaign...']")
-        await createCampaign.click()
-
-        // Assertion 
-        // var createNewcampaignPage = await browser.$("//span[@class='lvtHeaderText']").getText()
-        // await console.log(createNewcampaignPage);
-        // await assert.include(createNewcampaignPage,"Campaign","campaign page not found")
 
         // Assertion 
         await expect(browser).toHaveUrlContaining('EditView&return')
 
-        var campaignNameTxt = await browser.$("//input[@name='campaignname']")
-        await campaignNameTxt.setValue("campaignWebDriverIO")
+        await createCampaignPage.campaignName()
 
-        var campaignTypeDrop = await browser.$("//select[@name='campaigntype']")
-        await campaignTypeDrop.selectByVisibleText("Referral Program")
- 
-    
-        var saveBtn = await browser.$("//input[@class='crmButton small save']")
-        await saveBtn.click()
+        await createCampaignPage.saveBtn()
+
+        // var campaignTypeDrop = await browser.$("//select[@name='campaigntype']")
+        // await campaignTypeDrop.selectByVisibleText("Referral Program")
 
         // wait
         async () => {
@@ -71,11 +51,7 @@ describe ("vtiger_Campaign", async () => {
         // Assertion 
         await expect(browser).toHaveUrlContaining('Campaigns&record')
 
-        const adminImg = await browser.$("//img[@src='themes/softed/images/user.PNG']")
-        await adminImg.moveTo()
-
-        var signOut = await browser.$("//a[text()='Sign Out']")
-        await signOut.click()
+        await HomePage.signOut()
 
         // Assertion 
         // var loginPage = await browser.$("//a[text()='vtiger']").getText()
