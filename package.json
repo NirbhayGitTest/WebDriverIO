@@ -13,7 +13,11 @@
         "wdio-chromedriver-service": "^7.3.2"
     },
     "scripts": {
-        "wdio": "wdio run wdio.conf.js"
+        "wdio" : "wdio run wdio.conf.js",
+        "allurereport":"allure generate --clean allure report",
+        "allure":"allure open",
+        "Smoke" : "npx wdio run ./wdio.conf.js --mochaOpts.grep Smoke",
+        "CreateContact" : "npx wdio run ./wdio.conf.js --spec test/specs/vtiger/createContact.js"
     },
     "dependencies": {
         "chai": "^4.3.6",

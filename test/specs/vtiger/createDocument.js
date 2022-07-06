@@ -1,6 +1,9 @@
 const { assert } = require("chai")
 
-describe ("vtiger_Document", async () => {
+describe ("vtiger_Document", async function() {
+
+    //to rerun failed test scripts
+    this.retries(5)
 
     // var randomNum = Math.round(Math.random()*1000)
 
@@ -10,7 +13,7 @@ describe ("vtiger_Document", async () => {
         await console.log(browser.getTitle())
 
         var userName = "admin"
-        var password = "root"
+        var password = "root"                                                        
         const userText = await browser.$("//input[@name='user_name']")
         await userText.setValue(userName)
         const passwordText = await browser.$("//input[@name='user_password']")
@@ -34,7 +37,7 @@ describe ("vtiger_Document", async () => {
         await createDocument.click()
 
         // Assertion 
-        await expect(browser).toHaveUrlContaining('EditView&return')
+        await expect(browser).toHaveUrlContaining('EditView&return')         
        
 
         var documentNameTxt = await browser.$("//input[@name='notes_title']")
@@ -44,7 +47,7 @@ describe ("vtiger_Document", async () => {
 
     it('UploadFile' , async () => {
 
-        const filePath = 'E:/TestYantra Soft/Selenium Notes Sir/agile_2022.docx'
+        const filePath = 'E:/TestYantra Soft/Selenium Notes Sir/agile_2022.docx' 
         const remoteFilePath = await browser.uploadFile(filePath)
         await browser.$("#filename_I__").setValue(remoteFilePath)
         
@@ -99,7 +102,7 @@ describe ("vtiger_Document", async () => {
         const adminImg = await browser.$("//img[@src='themes/softed/images/user.PNG']")
         await adminImg.moveTo()
 
-        var signOut = await browser.$("//a[text()='Sign Out']")
+        var signOut = await browser.$("//a[text()='Sign Outttttttttt']")              //failing to make it rerun
         await signOut.click()
     })
 })

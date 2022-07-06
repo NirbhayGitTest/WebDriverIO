@@ -1,19 +1,20 @@
 const { assert } = require("chai")
+const campaignInformationPage = require("../../pomRepository/VTiger_POM/campaignInformationPage")
 const campaignPage = require("../../pomRepository/VTiger_POM/campaignPage")
 const createCampaignPage = require("../../pomRepository/VTiger_POM/createCampaignPage")
 
 const HomePage = require("../../pomRepository/VTiger_POM/HomePage")
-const LoginPage = require("../../pomRepository/VTiger_POM/LoginPage")
+// const LoginPage = require("../../pomRepository/VTiger_POM/LoginPage")  // pasted in beforeTest hook so no need now
 
 describe ("vtiger_Campaign", async () => {
     it('createCampaign -Smoke' , async () => {
         
-        await LoginPage.open()
+        // await LoginPage.open()
 
-        await console.log(browser.getTitle())
-        await browser.maximizeWindow()
+        // await console.log(browser.getTitle())
+        // await browser.maximizeWindow()
 
-        await LoginPage.login('admin', 'root');
+        // await LoginPage.login('admin', 'root');
     
 
         // Assertion
@@ -32,7 +33,11 @@ describe ("vtiger_Campaign", async () => {
 
         await createCampaignPage.campaignName()
 
+        
+
         await createCampaignPage.saveBtn()
+
+        
 
         // var campaignTypeDrop = await browser.$("//select[@name='campaigntype']")
         // await campaignTypeDrop.selectByVisibleText("Referral Program")
@@ -44,14 +49,16 @@ describe ("vtiger_Campaign", async () => {
         };
 
         // Assertion 
-        var campaignInformationPage = await browser.$("//span[@class='dvHeaderText']").getText()
-        await console.log(campaignInformationPage);
-        await assert.include(campaignInformationPage,"Campaign","campaign page not found")
+        // var campaignInformationPage = await browser.$("//span[@class='dvHeaderText']").getText()
+        // await console.log(campaignInformationPage);
+        // await assert.include(campaignInformationPage,"Campaign","campaign page not found")
+
+        await campaignInformationPage.assertCampaignName()
 
         // Assertion 
         await expect(browser).toHaveUrlContaining('Campaigns&record')
 
-        await HomePage.signOut()
+        // await HomePage.signOut()
 
         // Assertion 
         // var loginPage = await browser.$("//a[text()='vtiger']").getText()
@@ -59,7 +66,7 @@ describe ("vtiger_Campaign", async () => {
         // await assert.include(loginPage,"vtig","login page not found")
 
         // Assertion 
-        await expect(browser).toHaveUrlContaining('Login&module')
+        // await expect(browser).toHaveUrlContaining('Login&module')
     })
     
 })

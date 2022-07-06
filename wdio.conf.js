@@ -1,4 +1,7 @@
 const video = require('wdio-video-reporter');
+const HomePage = require('./test/pomRepository/VTiger_POM/HomePage');
+const { assert } = require("chai")
+const LoginPage = require("./test/pomRepository/VTiger_POM/LoginPage")
 
 exports.config = {
     //
@@ -36,17 +39,18 @@ exports.config = {
 
         
         // 'test/specs/vtiger/createDocument.js',
-        'test/specs/vtiger/createCampaign.js',
+        // 'test/specs/vtiger/createCampaign.js',
         // 'test/specs/vtiger/createProduct.js',
         // 'test/specs/vtiger/createOrganizationWithContact.js',
         // 'test/specs/vtiger/createCampaignWithProduct.js',
-        // 'test/specs/vtiger/createContact.js',
+        'test/specs/vtiger/createContact.js',
         // 'test/specs/vtiger/createOrganization.js',
         // 'test/specs/vtiger/orgWithIndustryDropdown.js',
 
         // 'test/specs/assignment/demoContact.js',
 
         // 'test/specs/assignment/demoContactjson.js',
+        // 'test/specs/vtiger/createOrganizationJson.js'
     ],
 
     suites: {
@@ -88,7 +92,7 @@ exports.config = {
         // maxInstances can get overwritten per capability. So if you have an in-house Selenium
         // grid with only 5 firefox instances available you can make sure that not more than
         // 5 instances get started at a time.
-        maxInstances: 5,
+        maxInstances: 1,
         browserName: 'chrome',
 
         // 'goog:chromeOptions': {
@@ -142,13 +146,15 @@ exports.config = {
     //
     // If you only want to run your tests until a specific amount of tests have failed use
     // bail (default is 0 - don't bail, run all tests).
-    bail: 0,
+    bail: 2,
     //
     // Set a base URL in order to shorten url command calls. If your `url` parameter starts
     // with `/`, the base url gets prepended, not including the path portion of your baseUrl.
     // If your `url` parameter starts without a scheme or `/` (like `some/path`), the base url
     // gets prepended directly.
-    baseUrl: 'http://localhost',
+    // baseUrl: 'http://localhost',
+    baseUrl: 'http://localhost:8888',
+
     //
     // Default timeout for all waitFor* commands.
     waitforTimeout: 10000,
@@ -293,8 +299,17 @@ exports.config = {
     /**
      * Function to be executed before a test (in Mocha/Jasmine) starts.
      */
-    // beforeTest: function (test, context) {
-    // },
+    beforeTest:async  function (test, context) {
+
+        await LoginPage.open()
+
+        // console.log(browser.getTitle())
+        await  browser.maximizeWindow()
+
+        await LoginPage.login('admin', 'root');
+
+
+    },
     /**
      * Hook that gets executed _before_ a hook within the suite starts (e.g. runs before calling
      * beforeEach in Mocha)
@@ -318,6 +333,10 @@ exports.config = {
      * @param {Object}  result.retries   informations to spec related retries, e.g. `{ attempts: 0, limit: 0 }`
      */
     afterTest: async function(test, context, { error, result, duration, passed, retries }) {
+
+        await HomePage.signOut()
+        await expect(browser).toHaveUrlContaining('Login&module')
+
         if (error) {
             await browser.takeScreenshot();
           }

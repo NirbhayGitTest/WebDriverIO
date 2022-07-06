@@ -1,16 +1,19 @@
+const { assert } = require("chai");
+
 class contactInformationPage{
 
 
     //create contact button
-    get contactLastNameTxt()
+    get contactNameText()
     {
-        return $("//input[@name='lastname']")
+        return $("//span[@class='dvHeaderText']")
     }
 
-    async contactLastName(){
-        await this.contactLastNameTxt.setValue("contactWebDriverIO")
+    async assertContactName(){
+        var savedContactInformation = await this.contactNameText.getText()
+        await console.log(savedContactInformation);
+        await assert.include(savedContactInformation,"Contact","contact page not found")
     }
-
 
 }
 

@@ -9,7 +9,7 @@ describe("alertHandle" , () => {
         var promptText = await browser.getAlertText()
         console.log("=============promptAlert==========" + promptText);
 
-        await browser.sendAlertText("Enter Something")
+        await browser.sentAlertText("Enter Something")
 
         await browser.acceptAlert()
     })

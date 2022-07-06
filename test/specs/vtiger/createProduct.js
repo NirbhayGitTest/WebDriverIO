@@ -47,7 +47,10 @@ describe ("vtiger_Product", async () => {
 
     it('save and logout' , async () => { 
         var saveBtn = await browser.$("//input[@name='productname']/../../preceding-sibling::tr/preceding-sibling::tr/td/div/input[@class='crmbutton small save']")
+        
+        
         await saveBtn.click()
+        
         
         // wait
         async () => {
